@@ -6,6 +6,7 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
+        "rootDir": "./",
         "outDir": "./dist",
         "resolveJsonModule": true,
         "noImplicitAny": true,
@@ -14,9 +15,8 @@
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "alwaysStrict": true,
-        "baseUrl": "./",
         "paths": {
-            "*": ["*"]
+            "*": ["./*"]
         }
     },
     "include": ["src/**/*", "test/**/*", "config/**/*"],
