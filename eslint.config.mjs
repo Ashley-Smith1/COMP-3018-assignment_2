@@ -5,11 +5,11 @@ import tsParser from "@typescript-eslint/parser";
 export default tseslint.config(
     {
         ignores: [
-            "**/dist/*",
-            "**coverage/*",
-            "**.github/*",
+            "**/dist/**",
+            "**coverage/**",
+            "**.github/**",
             "eslint.config.mjs",
-            "jest.config.ts",
+            "jest.config.cjs",
         ],
     },
     eslint.configs.recommended,
