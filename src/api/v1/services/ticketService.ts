@@ -82,17 +82,7 @@ export const calculateUrgencyScore = (ticket: Ticket): number => {
     low: 10,
   };
 
-  const createdDate: Date = new Date(ticket.createdAt);
-  const currentDate: Date = new Date();
-
-  const millisecondsPerDay: number = 1000 * 60 * 60 * 24;
-
-  const ticketAge: number = Math.max(
-    0,
-    Math.floor(
-      (currentDate.getTime() - createdDate.getTime()) / millisecondsPerDay
-    )
-  );
+  const ticketAge: number = calculateTicketAge(ticket);
 
   const urgencyScore: number =
     baseScores[ticket.priority] + ticketAge * 5;
@@ -100,6 +90,7 @@ export const calculateUrgencyScore = (ticket: Ticket): number => {
   return urgencyScore;
 };
 
+// Determine the urgency level message
 export const getUrgencyLevel = (score: number): string => {
   if (score >= 80) {
     return "Critical. Immediate attention required.";
@@ -114,4 +105,50 @@ export const getUrgencyLevel = (score: number): string => {
   }
 
   return "Low urgency. Address when capacity allows.";
+};
+
+// Calculate how many days old a ticket is
+export const calculateTicketAge = (ticket: Ticket): number => {
+  const createdDate: Date = new Date(ticket.createdAt);
+  const currentDate: Date = new Date();
+
+  const millisecondsPerDay: number = 1000 * 60 * 60 * 24;
+
+  const ticketAge: number = Math.max(
+    0,
+    Math.floor(
+      (currentDate.getTime() - createdDate.getTime()) / millisecondsPerDay
+    )
+  );
+
+  return ticketAge;
+};
+
+// Define the urgency response structure
+export interface TicketUrgency extends Ticket {
+  ticketAge: number;
+  urgencyScore: number;
+  urgencyLevel: string;
+}
+
+// Get a ticket with its calculated urgency
+export const getTicketUrgency = (
+  id: number
+): TicketUrgency | undefined => {
+  const ticket: Ticket | undefined = getTicketById(id);
+
+  if (!ticket) {
+    return undefined;
+  }
+
+  const ticketAge: number = calculateTicketAge(ticket);
+  const urgencyScore: number = calculateUrgencyScore(ticket);
+  const urgencyLevel: string = getUrgencyLevel(urgencyScore);
+
+  return {
+    ...ticket,
+    ticketAge,
+    urgencyScore,
+    urgencyLevel,
+  };
 };
