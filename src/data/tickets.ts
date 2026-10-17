@@ -2,7 +2,7 @@ import type { Ticket } from "../api/v1/models/ticketModel";
 
 // Create a date based on how many days old a ticket is
 const daysAgo = (days: number): string => {
-  const date = new Date();
+  const date: Date = new Date();
   date.setDate(date.getDate() - days);
   return date.toISOString();
 };
